@@ -171,7 +171,7 @@ tl.to("#progress-bar", { width: "100%", duration: tl.totalDuration(), ease: "non
 document.getElementById("start-btn").onclick = () => { 
     music.play().catch(e => console.log("Sound check", e));
     // Gently fade from silent (0) to lowest audible (0.05)
-    gsap.fromTo(music, { volume: 0 }, { volume: 0.05, duration: 5 });
+    gsap.fromTo(music, { volume: 0 }, { volume: 0.5, duration: 5 });
     tl.play(); 
 };
 
