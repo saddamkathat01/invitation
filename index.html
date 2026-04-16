@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nikah Invitation | Saddam Kathat & Afsana Bano</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital@1&family=Playfair+Display:wght@600&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+
+    <style>
+        :root { --gold: #c5a059; --bg: #060c09; --white: #f4f4f4; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--white); font-family: 'Poppins', sans-serif; overflow: hidden; height: 100vh; }
+        
+        #heartCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+        /* Music Controls */
+        .controls { position: fixed; top: 20px; right: 20px; z-index: 10001; display: none; flex-direction: column; align-items: center; gap: 10px; }
+        #music-control { background: rgba(197, 160, 89, 0.2); border: 1px solid var(--gold); color: var(--gold); width: 45px; height: 45px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; }
+        #volume-slider { width: 80px; accent-color: var(--gold); cursor: pointer; }
+
+        #start-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg); z-index: 10000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; border: 2px solid var(--gold);
+        }
+
+        .scene {
+            position: absolute; width: 100%; height: 100vh;
+            display: none; flex-direction: column; justify-content: center; 
+            align-items: center; text-align: center; padding: 2rem; z-index: 10;
+        }
+
+        h1 { font-family: 'Amiri', serif; font-size: clamp(2.5rem, 8vw, 4rem); color: var(--gold); margin: 10px 0; line-height: 1.2; }
+        h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 5vw, 2rem); color: var(--gold); margin-bottom: 15px; }
+        .shayari { font-size: clamp(1.1rem, 4vw, 1.4rem); line-height: 1.8; color: #eee; max-width: 700px; font-style: italic; }
+        .bismillah { font-family: 'Amiri', serif; font-size: 2.2rem; color: var(--gold); margin-bottom: 15px; }
+
+        .summary-card {
+            background: rgba(255, 255, 255, 0.05); border: 1px solid var(--gold);
+            padding: 25px; border-radius: 15px; width: 100%; max-width: 450px;
+            text-align: left; backdrop-filter: blur(10px);
+        }
+        .detail-row { margin-bottom: 12px; }
+        .detail-row b { color: var(--gold); text-transform: uppercase; font-size: 0.75rem; display: block; }
+        
+        .btn-group { display: flex; gap: 10px; margin-top: 20px; }
+        .cta-btn {
+            flex: 1; padding: 12px; border: 1px solid var(--gold);
+            background: transparent; color: var(--gold); cursor: pointer;
+            text-transform: uppercase; font-size: 0.75rem; text-decoration: none; text-align: center;
+        }
+        .primary-btn { background: var(--gold); color: black !important; }
+
+        #progress-bar { position: fixed; bottom: 0; left: 0; height: 4px; background: var(--gold); width: 0%; z-index: 999; }
+    </style>
+</head>
+<body>
+
+<canvas id="heartCanvas"></canvas>
+<div id="progress-bar"></div>
+
+<div class="controls" id="ui-controls">
+    <button id="music-control">🔊</button>
+    <input type="range" id="volume-slider" min="0" max="1" step="0.00001" value="0.00001" hidden>
+</div>
+
+<div id="start-overlay">
+    <div class="bismillah">بِسْمِ اللهِ الرَّحْمٰنِ الرَّحِيْمِ</div>
+    <button class="cta-btn primary-btn" id="start-btn" style="flex:none; padding: 15px 40px; width: auto;">Bismillah (Open Invitation)</button>
+    <p style="margin-top: 15px; font-size: 0.8rem; opacity: 0.6; letter-spacing: 1px;">PLEASE ENABLE SOUND</p>
+</div>
+
+<audio id="music" loop>
+    <source src="courtyard-serenade.mp3" type="audio/mp3">
+</audio>
+
+<section class="scene" id="scene1">
+    <p class="shayari">"Nikah is my Sunnah, and whoever does not follow my Sunnah has nothing to do with me."<br><span style="font-size: 0.9rem; opacity: 0.7;">— Prophet Muhammad (PBUH)</span></p>
+</section>
+
+<section class="scene" id="scene2">
+    <p class="shayari">"दिलों के रिश्ते तो आसमानों में बनते हैं,<br>ज़मीन पर तो बस मुकम्मल होने का जश्न मनाते हैं।"</p>
+</section>
+
+<section class="scene" id="scene3">
+    <p style="letter-spacing: 2px;">KHUSHAMDEED</p>
+    <h1 id="guest-name">Guest Name</h1>
+    <p>Seeking your dua and presence on this auspicious day.</p>
+</section>
+
+<section class="scene" id="scene4">
+    <p class="shayari">"And We created you in pairs..."<br><span style="font-size: 0.8rem;">(Surah An-Naba, 78:8)</span></p>
+</section>
+
+<section class="scene" id="scene5">
+    <h1>Saddam Kathat <br>&<br> Afsana Bano</h1>
+    <h2 style="font-size: 1.2rem;">Inviting you to witness their Nikah</h2>
+</section>
+
+<section class="scene" id="scene6">
+    <h2>Program & Venue</h2>
+    <div class="summary-card">
+        <div class="detail-row"><b>Nikah Ceremony</b><p>12th Dec 2025 | 11:30 AM</p></div>
+        <div class="detail-row"><b>Walima</b><p>13th Dec 2025 | 08:30 PM</p></div>
+        <div class="detail-row"><b>Venue</b><p>Idgah Colony, Vaishali Nagar, Ajmer - 305001</p></div>
+        <div class="btn-group">
+            <a href="https://www.google.com/maps?q=Idgah+Colony,Vaishali+Nagar,Ajmer,305001" target="_blank" class="cta-btn primary-btn">📍 Open Map</a>
+            <a href="invitation.pdf" class="cta-btn">📄 Get PDF</a>
+        </div>
+    </div>
+    
+</section>
+
+
+<script>
+// --- HEART ENGINE ---
+const canvas = document.getElementById('heartCanvas');
+const ctx = canvas.getContext('2d');
+let hearts = [];
+function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+window.addEventListener('resize', resize);
+resize();
+class Heart {
+    constructor() { this.reset(); }
+    reset() { this.x = Math.random() * canvas.width; this.y = canvas.height + 20; this.size = Math.random() * 10 + 8; this.speed = Math.random() * 0.7 + 0.3; this.opacity = Math.random() * 0.4 + 0.1; }
+    draw() {
+        ctx.fillStyle = `rgba(197, 160, 89, ${this.opacity})`;
+        ctx.beginPath(); ctx.moveTo(this.x, this.y + this.size * 0.3);
+        ctx.bezierCurveTo(this.x, this.y, this.x - this.size / 2, this.y, this.x - this.size / 2, this.y + this.size * 0.3);
+        ctx.bezierCurveTo(this.x - this.size / 2, this.y + this.size * 0.7, this.x, this.y + this.size, this.x, this.y + this.size);
+        ctx.bezierCurveTo(this.x, this.y + this.size, this.x + this.size / 2, this.y + this.size * 0.7, this.x + this.size / 2, this.y + this.size * 0.3);
+        ctx.bezierCurveTo(this.x + this.size / 2, this.y, this.x, this.y, this.x, this.y + this.size * 0.3);
+        ctx.fill();
+    }
+    update() { this.y -= this.speed; if (this.y < -20) this.reset(); }
+}
+for (let i = 0; i < 35; i++) hearts.push(new Heart());
+function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); hearts.forEach(h => { h.update(); h.draw(); }); requestAnimationFrame(animate); }
+animate();
+
+// --- LOGIC ---
+const params = new URLSearchParams(window.location.search);
+document.getElementById("guest-name").innerText = (params.get("n") || "Azeez Mehmaan") + " Ji";
+
+const tl = gsap.timeline({ paused: true });
+const music = document.getElementById("music");
+const volSlider = document.getElementById("volume-slider");
+const musicBtn = document.getElementById("music-control");
+
+// Default Volume
+music.volume = 0.4;
+
+tl.to("#start-overlay", { opacity: 0, duration: 1, onComplete: () => { 
+    document.getElementById("start-overlay").style.display = "none";
+    document.getElementById("ui-controls").style.display = "flex";
+}})
+.set(".scene", { display: "none" })
+.set("#scene1", { display: "flex" }).from("#scene1", { opacity: 0, duration: 2 }).to("#scene1", { opacity: 0, duration: 1, delay: 2.5 })
+.set("#scene2", { display: "flex" }).from("#scene2", { opacity: 0, duration: 2 }).to("#scene2", { opacity: 0, duration: 1, delay: 2.5 })
+.set("#scene3", { display: "flex" }).from("#scene3", { opacity: 0, scale: 0.9, duration: 2 }).to("#scene3", { opacity: 0, duration: 1, delay: 3 })
+.set("#scene4", { display: "flex" }).from("#scene4", { opacity: 0, duration: 2 }).to("#scene4", { opacity: 0, duration: 1, delay: 2.5 })
+.set("#scene5", { display: "flex" }).from("#scene5", { opacity: 0, y: 40, duration: 2 }).to("#scene5", { opacity: 0, duration: 1, delay: 3 })
+.set("#scene6", { display: "flex" }).from("#scene6", { opacity: 0, duration: 2 });
+
+tl.to("#progress-bar", { width: "100%", duration: tl.totalDuration(), ease: "none" }, 0);
+
+// Interaction
+document.getElementById("start-btn").onclick = () => { 
+    music.play().catch(e => console.log("Sound check", e));
+    // Gently fade from silent (0) to lowest audible (0.05)
+    gsap.fromTo(music, { volume: 0 }, { volume: 0.05, duration: 5 });
+    tl.play(); 
+};
+
+// Controls
+volSlider.oninput = (e) => { music.volume = e.target.value; };
+musicBtn.onclick = () => {
+    if (music.paused) { music.play(); musicBtn.innerText = "🔊"; }
+    else { music.pause(); musicBtn.innerText = "🔇"; }
+};
+</script>
+</body>
+</html>
